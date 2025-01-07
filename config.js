@@ -12,10 +12,10 @@ exports.config = qmateProfiles.merge(profile, {
     }
   },
 
-  baseUrl: "https://sss-ccc.wdf.sap.corp/ui",
+  baseUrl: "https://sapui5.hana.ondemand.com",
 
   specs: [[
-    "specs/01_template.spec.js", 
-    "specs/02_template.spec.js"
+    //"specs/01_ERX.spec.js", 
+    "specs/shopAdministrationTool.spec.js"
   ]]
 });
