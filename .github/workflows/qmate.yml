@@ -1,0 +1,39 @@
+name: 'Qmate'
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  qmate:
+    runs-on: [self-hosted, solinas]
+    container:
+      image: qmate.int.repositories.cloud.sap/qmate-executor:latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Display Qmate version and execute tests
+        env:
+          QMATE_PRIVATE_KEY: ${{ secrets.QMATE_PRIVATE_KEY }}
+        run: |
+          qmate --version
+          qmate path/to/your/conf.js
+        continue-on-error: true
+
+      - name: Publish test results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: |
+            results/**/*.xml
+
+      - name: Attach HTML report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report
+          path: results/**/*.html
